@@ -38,6 +38,8 @@ Digraph G {
 ```
 **NFA**:
 
+![1](https://user-images.githubusercontent.com/31496021/159165960-727eab00-30af-4758-b810-eb210a4434d3.svg)
+
 
 ```python
 dfa = regex.subset_construction(nfa)
@@ -67,6 +69,7 @@ Digraph G {
 
 **DFA**:
 
+![2](https://user-images.githubusercontent.com/31496021/159165974-eb2c6b49-96ed-4c7c-9a8d-0b6b3c0bfe01.svg)
 
 
 ```python
@@ -90,8 +93,11 @@ Digraph G {
 
 **Minimal DFA**:
 
+![3](https://user-images.githubusercontent.com/31496021/159165979-437ca3fa-f83d-43e0-b8e3-49cd0692d87b.svg)
 
-Utility function is provided to simplify the construction of NFA, escape ('\') and extensions ('[]^?') not supported use carefully:
+
+Utility function is provided to simplify the construction of NFA, escape ('\') and extensions ('[]^?') not supported, use carefully:
 ```python
+# Build NFA from regex
 nfa = regex.parse('(a|b)*')
 ```
