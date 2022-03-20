@@ -42,6 +42,9 @@ class StateSet:
     def __sub__(self, other: 'StateSet') -> 'StateSet':
         return StateSet(self.states - other.states)
 
+    def __repr__(self):
+        return f'StateSet({self.states})'
+
 
 class FA:
     # base class for NFA and DFA
@@ -62,7 +65,7 @@ class FA:
 
     def chars(self) -> Set[str]:
         # compute Σ*
-        return {c for _, c, _ in self.transitions}
+        return {c for _, c, _ in self.transitions} - {epsilon}
 
 
 class NFA(FA):
@@ -179,6 +182,16 @@ class DFA(FA):
     def compute_transition(self):
         for left, c, right in self.transitions:
             self._transition_from[left][c] = right
+
+    def match(self, string: str) -> bool:
+        s = self.start
+        for c in string:
+            if c not in self.transition_from(s):
+                return False
+            else:
+                s = self.transition_from(s)[c]
+
+        return s in self.accepts
 
     def to_graphviz(self) -> str:
         counter = 0
@@ -351,6 +364,8 @@ def dfa_minimize(dfa: DFA) -> DFA:
                 new_right = d
 
         new_dfa.add_transition(new_left, c, new_right)
+
+    new_dfa.compute_transition()
     return new_dfa
 
 

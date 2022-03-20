@@ -23,22 +23,21 @@ Digraph G {
         0 [shape=plaintext, label="start"]
         3 [shape=doublecircle]
 
-        0 -> 7
+        0 -> 6
         1 ->  2 [label = " ε"]
         2 ->  3 [label = " ε"]
-        4 ->  2 [label = " ε"]
-        5 ->  6 [label = " ε"]
-        7 ->  5 [label = " ε"]
-        8 ->  4 [label = " b"]
-        2 ->  5 [label = " ε"]
-        6 ->  1 [label = " a"]
-        5 ->  8 [label = " ε"]
-        7 ->  3 [label = " ε"]
+        4 ->  5 [label = " ε"]
+        6 ->  3 [label = " ε"]
+        2 ->  4 [label = " ε"]
+        7 ->  1 [label = " b"]
+        6 ->  4 [label = " ε"]
+        8 ->  2 [label = " ε"]
+        4 ->  7 [label = " ε"]
+        5 ->  8 [label = " a"]
 }
 ```
 **NFA**:
 
-![1](https://user-images.githubusercontent.com/31496021/159161023-d9d68a5a-add8-44af-b901-5009879cd82d.svg)
 
 ```python
 dfa = regex.subset_construction(nfa)
@@ -51,37 +50,23 @@ Digraph G {
         node [shape=circle]
         rankdir = LR
         0 [shape=plaintext, label="start"]
-        4 [shape=doublecircle]
+        3 [shape=doublecircle]
         2 [shape=doublecircle]
         1 [shape=doublecircle]
-        3 [shape=doublecircle]
-        5 [shape=doublecircle]
 
         0 -> 1
         1 ->  2 [label = " a"]
-        3 ->  4 [label = " ε"]
-        1 ->  5 [label = " b"]
-        6 ->  5 [label = " b"]
-        2 ->  2 [label = " a"]
-        4 ->  2 [label = " a"]
-        4 ->  6 [label = " ε"]
-        5 ->  5 [label = " b"]
+        3 ->  3 [label = " b"]
         3 ->  2 [label = " a"]
-        2 ->  5 [label = " b"]
-        1 ->  4 [label = " ε"]
-        4 ->  5 [label = " b"]
-        2 ->  3 [label = " ε"]
-        5 ->  2 [label = " a"]
-        3 ->  5 [label = " b"]
-        5 ->  3 [label = " ε"]
-        6 ->  2 [label = " a"]
+        2 ->  2 [label = " a"]
+        2 ->  3 [label = " b"]
+        1 ->  3 [label = " b"]
 }
 ```
 
 
 **DFA**:
 
-![2](https://user-images.githubusercontent.com/31496021/159161126-5560afd8-2b89-4bde-a90d-9809c888497d.svg)
 
 
 ```python
@@ -95,21 +80,16 @@ Digraph G {
         node [shape=circle]
         rankdir = LR
         0 [shape=plaintext, label="start"]
-        2 [shape=doublecircle]
+        1 [shape=doublecircle]
 
-        0 -> 2
-        1 ->  2 [label = " a"]
-        2 ->  2 [label = " ε"]
-        2 ->  2 [label = " b"]
-        2 ->  2 [label = " a"]
-        2 ->  1 [label = " ε"]
-        1 ->  2 [label = " b"]
+        0 -> 1
+        1 ->  1 [label = " b"]
+        1 ->  1 [label = " a"]
 }
 ```
 
 **Minimal DFA**:
 
-![3](https://user-images.githubusercontent.com/31496021/159161193-0d3e4630-dddf-408d-8528-cb755238790c.svg)
 
 Utility function is provided to simplify the construction of NFA, escape ('\') and extensions ('[]^?') not supported use carefully:
 ```python
