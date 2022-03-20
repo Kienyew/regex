@@ -96,7 +96,7 @@ Digraph G {
 ![3](https://user-images.githubusercontent.com/31496021/159165979-437ca3fa-f83d-43e0-b8e3-49cd0692d87b.svg)
 
 
-Utility function is provided to simplify the construction of NFA, escape ('\') and extensions ('[]^?') not supported, use carefully:
+Utility function is provided to simplify the construction of NFA, escape ('\\') and extensions ('[]^?') not supported, use carefully:
 ```python
 # Build NFA from regex
 nfa = regex.parse('(a|b)*')
