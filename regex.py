@@ -268,7 +268,6 @@ def subset_construction(nfa: NFA) -> DFA:
 
     Q2D = defaultdict(State)
     accepts = StateSet({Q2D[q] for q in Q if nfa.accept in q})
-    print(q0.states)
     dfa = DFA(Q2D[q0], accepts)
     for q, c, t in T:
         dfa.add_transition(Q2D[q], c, Q2D[t])
