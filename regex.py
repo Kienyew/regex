@@ -285,6 +285,7 @@ def subset_construction(nfa: NFA) -> DFA:
     for q, c, t in T:
         dfa.add_transition(Q2D[q], c, Q2D[t])
 
+    dfa.compute_transition()
     return dfa
 
 
@@ -456,3 +457,4 @@ def parse(regex: str) -> NFA:
 
     s, nfa = expr()
     return nfa
+
