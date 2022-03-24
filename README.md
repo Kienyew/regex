@@ -101,3 +101,6 @@ Utility function is provided to simplify the construction of NFA, escape ('\\') 
 # Build NFA from regex
 nfa = regex.parse('(a|b)*')
 ```
+
+### Reference
+Main reference: [Engineering: A Compiler 2nd Edition](https://www.amazon.com/Engineering-Compiler-Keith-Cooper/dp/012088478X)
