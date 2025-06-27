@@ -102,7 +102,5 @@ Utility function is provided to simplify the construction of NFA, escape ('\\') 
 nfa = regex.parse('(a|b)*')
 ```
 
-Known issue: `abc*` will faultily parsed as `(abc)*`.
-
 ### Reference
 Main reference: [Engineering: A Compiler 2nd Edition](https://www.amazon.com/Engineering-Compiler-Keith-Cooper/dp/012088478X)
