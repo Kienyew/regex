@@ -473,5 +473,4 @@ def parse(regex: str) -> NFA:
     s, nfa = expr()
     return nfa
 
-print(subset_construction(parse('abc*')).to_graphviz())
 
