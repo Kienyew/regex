@@ -375,20 +375,27 @@ def parse(regex: str) -> NFA:
     # No extenstion supported (eg. [] ? [^.] .), also, no escape '\' supported.
     # Use 'ε' character if want to represent empty character transition.
 
-    # expr -> term '|' expr
-    # expr -> term
-    # term -> factor term
-    # term -> factor
-    # term -> factor *
+    # expr   -> term '|' expr
+    # expr   -> term
+    # term   -> factor term
+    # term   -> factor
+    # term   -> factor *
+    # factor -> char *
     # factor -> chars
     # factor -> ( expr )
-    # chars -> any valid characters
+    # chars  -> any valid characters
 
     i = 0
 
     def advance(k):
         nonlocal i
         i += k
+
+    def peek(j):
+        if i + j >= len(regex):
+            return None
+        else:
+            return regex[i + j]
 
     def top():
         return regex[i]
@@ -446,15 +453,25 @@ def parse(regex: str) -> NFA:
         return s, nfa
 
     def chars():
+        if peek(1) == '*':
+            result = top() + '*', NFA.char(top()).closure()
+            advance(2)
+            return result
+
         nfa = NFA(None, {})
         s = ''
         while not eof() and top() not in '()|*':
-            s += top()
-            nfa = nfa.join(NFA.char(top()))
-            advance(1)
+            if peek(1) == '*':
+                return s, nfa
+            else:
+                s += top()
+                nfa = nfa.join(NFA.char(top()))
+                advance(1)
 
         return s, nfa
 
     s, nfa = expr()
     return nfa
+
+print(subset_construction(parse('abc*')).to_graphviz())
 
