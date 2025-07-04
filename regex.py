@@ -370,20 +370,22 @@ def dfa_minimize(dfa: DFA) -> DFA:
     return new_dfa
 
 
+
 def parse(regex: str) -> NFA:
     # Generate an NFA from regular expression.
     # No extenstion supported (eg. [] ? [^.] .), also, no escape '\' supported.
     # Use 'ε' character if want to represent empty character transition.
 
-    # expr   -> term '|' expr
-    # expr   -> term
-    # term   -> factor term
-    # term   -> factor
-    # term   -> factor *
-    # factor -> char *
+    # expr -> term '|' expr
+    # expr -> term
+    # term -> factor term
+    # term -> factor
+    # term -> factor *
     # factor -> chars
     # factor -> ( expr )
-    # chars  -> any valid characters
+    # chars -> c chars
+    # chars -> c *
+    # chars -> ε
 
     i = 0
 
@@ -391,24 +393,18 @@ def parse(regex: str) -> NFA:
         nonlocal i
         i += k
 
-    def peek(j):
-        if i + j >= len(regex):
-            return None
-        else:
-            return regex[i + j]
-
-    def top():
-        return regex[i]
+    def peek(k: int):
+        return regex[i + k]
 
     def eof():
         return i >= len(regex)
 
-    def expr():
+    def expr() -> tuple[str, NFA]:
         s, nfa = term()
         if eof():
             return s, nfa
 
-        elif top() == '|':
+        elif peek(0) == '|':
             s += '|'
             advance(1)
             ss, nnfa = expr()
@@ -417,12 +413,12 @@ def parse(regex: str) -> NFA:
 
         return s, nfa
 
-    def term():
+    def term() -> tuple[str, NFA]:
         s, nfa = factor()
         if eof():
             return s, nfa
 
-        if top() == '*':
+        if peek(0) == '*':
             s += '*'
             nfa = nfa.closure()
             advance(1)
@@ -430,17 +426,17 @@ def parse(regex: str) -> NFA:
         if eof():
             return s, nfa
 
-        if top() not in '|)':
+        if peek(0) not in '|)':
             ss, nnfa = term()
             s += ss
             nfa = nfa.join(nnfa)
 
         return s, nfa
 
-    def factor():
+    def factor() -> tuple[str, NFA]:
         s = ''
-        if top() == '(':
-            s += top()
+        if peek(0) == '(':
+            s += peek(0)
             advance(1)
             ss, nfa = expr()
             s += ss
@@ -453,20 +449,17 @@ def parse(regex: str) -> NFA:
         return s, nfa
 
     def chars():
-        if peek(1) == '*':
-            result = top() + '*', NFA.char(top()).closure()
-            advance(2)
-            return result
-
-        nfa = NFA(None, {})
+        nfa = NFA(None, None)
         s = ''
-        while not eof() and top() not in '()|*':
-            if peek(1) == '*':
-                return s, nfa
+        while not eof() and peek(0) not in '()|*':
+            if i + 1 < len(regex) and peek(1) == '*':
+                s += peek(0) + '*'
+                nfa = nfa.join(NFA.char(peek(0)).closure())
+                advance(2) # skip c and '*'
             else:
-                s += top()
-                nfa = nfa.join(NFA.char(top()))
-                advance(1)
+                s += peek(0)
+                nfa = nfa.join(NFA.char(peek(0)))
+                advance(1) # skip c
 
         return s, nfa
 
